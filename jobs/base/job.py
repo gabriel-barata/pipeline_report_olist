@@ -2,14 +2,12 @@ import os
 from abc import abstractmethod
 
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import lit
+from pyspark.sql.functions import col, lit
 
 
 class Job:
     def __init__(self, config: dict[str, str] = None):
         self.config = config or {}
-        self.sources = {}
-        self.target = ''
 
     @property
     def ref_date(self) -> str:
@@ -35,6 +33,7 @@ class Job:
                 'spark.hadoop.fs.s3a.impl', 'org.apache.hadoop.fs.s3a.S3AFileSystem'
             )
             .config('spark.hadoop.fs.s3a.endpoint', 's3.amazonaws.com')
+            .config('spark.driver.memory', '6g')
             .getOrCreate()
         )
 
@@ -43,6 +42,17 @@ class Job:
             df.withColumn('YEAR', lit(self.ref_date[:4]))
             .withColumn('MONTH', lit(self.ref_date[5:7]))
             .withColumn('DAY', lit(self.ref_date[-2:]))
+        )
+
+    def filter_by_ref_date(self, df: DataFrame) -> DataFrame:
+        year, month, day = (
+            self.ref_date[:4],
+            self.ref_date[5:7],
+            self.ref_date[-2:],
+        )
+
+        return df.filter(
+            (col('YEAR') == year) & (col('MONTH') == month) & (col('DAY') == day)
         )
 
     @abstractmethod

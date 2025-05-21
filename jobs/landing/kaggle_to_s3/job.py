@@ -1,24 +1,14 @@
-from pathlib import Path
-
 from jobs.base.job import Job
-
-BASE_LOCAL_PATH = (
-    Path(__file__).parent.parent.parent.parent / 'resources' / 'sample_data'
-)
-BASE_S3_PATH = 's3a://olist-datalake-prd-us-east-1-269012942764-landing/kaggle/'
-
-FILES = {
-    'order_items': 'olist_order_items_dataset.csv',
-    'order_payments': 'olist_order_payments_dataset.csv',
-    'products': 'olist_products_dataset.csv',
-}
+from jobs.base.variables import KAGGLE_FILES, LANDING_BUCKET, SAMPLE_DATA_PATH
 
 
 class KaggleToS3Job(Job):
+    target = LANDING_BUCKET + 'kaggle/'
+
     def run(self) -> None:
-        for table_name, file_name in FILES.items():
-            file_path = str(BASE_LOCAL_PATH / file_name)
-            output_path = BASE_S3_PATH + table_name
+        for table_name, file_name in KAGGLE_FILES.items():
+            file_path = str(SAMPLE_DATA_PATH / file_name)
+            output_path = self.target + table_name
 
             data = self.spark.read.csv(
                 file_path, sep=',', header=True, inferSchema=True
@@ -29,5 +19,5 @@ class KaggleToS3Job(Job):
             (
                 data.write.mode('overwrite')
                 .partitionBy('YEAR', 'MONTH', 'DAY')
-                .parquet(output_path)
+                .csv(output_path, header=True, sep=',')
             )
