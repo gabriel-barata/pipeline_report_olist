@@ -9,6 +9,9 @@ poetry env activate
 poetry run python -m jobs.main landing.kaggle_to_s3 '2025-05-20'
 ```
 
+```bash
+poetry run python -m jobs.main curated.sales_consolidated '2025-05-20'
+```
 
 ## Datalake Layers
 ### Landing

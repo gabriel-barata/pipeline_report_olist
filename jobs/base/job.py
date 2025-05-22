@@ -24,7 +24,7 @@ class Job:
             builder.master('local[*]')
             .config(
                 'spark.jars.packages',
-                'org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.12.262',
+                'org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.12.262,io.delta:delta-spark_2.12:3.1.0',
             )
             .config('spark.hadoop.fs.s3a.endpoint', 's3.amazonaws.com')
             .config('spark.hadoop.fs.s3a.access.key', os.getenv('AWS_ACCESS_KEY'))
@@ -33,6 +33,11 @@ class Job:
                 'spark.hadoop.fs.s3a.impl', 'org.apache.hadoop.fs.s3a.S3AFileSystem'
             )
             .config('spark.hadoop.fs.s3a.endpoint', 's3.amazonaws.com')
+            .config('spark.sql.extensions', 'io.delta.sql.DeltaSparkSessionExtension')
+            .config(
+                'spark.sql.catalog.spark_catalog',
+                'org.apache.spark.sql.delta.catalog.DeltaCatalog',
+            )
             .config('spark.driver.memory', '6g')
             .getOrCreate()
         )

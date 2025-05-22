@@ -13,4 +13,5 @@ KAGGLE_FILES = {
     'orders': 'olist_orders_dataset.csv',
     'products': 'olist_products_dataset.csv',
     'sellers': 'olist_sellers_dataset.csv',
+    'customers': 'olist_customers_dataset.csv',
 }
