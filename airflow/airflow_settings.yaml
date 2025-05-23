@@ -1,0 +1,18 @@
+# Variables and conections definition
+
+airflow:
+  connections:
+    - conn_id: aws_default
+      conn_type: generic
+      conn_login: ${AWS_ACCESS_KEY_ID}
+      conn_password: ${AWS_SECRET_ACCESS_KEY}
+
+  variables:
+    - variable_name: OLIST_REPORT_EMR_APP_NAME
+      variable_value: any__
+
+    - variable_name: OLIST_REPORT_EMR_APP_ROLE_ARN
+      variable_value: arn:aws:iam::269012942764:role/olist-emr-serverless-execution-role
+
+    - variable_name: CURATED_BUCKET
+      variable_value: s3://olist-datalake-prd-us-east-1-269012942764-curated

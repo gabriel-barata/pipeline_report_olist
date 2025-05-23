@@ -1,20 +1,21 @@
 from datetime import datetime, timedelta
 
-from airflow import Dataset
 from airflow.decorators import dag, task, task_group
 from airflow.models import Variable
 from airflow.providers.amazon.aws.operators.emr import (
     EmrServerlessStartJobOperator,
 )
 
+from airflow import Dataset
+
 DAG_ID = 'olist_report_pipeline'
-APPLICATION_ID = Variable.get('olist-report-emr-app')
-EXECUTION_ROLE_ARN = Variable.get('olist-report-emr-app-role-arn')
+APPLICATION_ID = Variable.get('OLIST_REPORT_EMR_APP_NAME')
+EXECUTION_ROLE_ARN = Variable.get('OLIST_REPORT_EMR_APP_ROLE_ARN')
 REF_DATE_DELAY = -1
 REF_DATE = '{{ ti.xcom_pull(task_ids="get_ref_date") }}'
 DATE_FORMAT = '%Y-%m-%d'
 
-CURATED_BUCKET = 's3://olist-datalake-prd-us-east-1-269012942764-curated'
+CURATED_BUCKET = Variable.get('CURATED_BUCKET')
 JOB_CODE_PATH = (
     's3://olist-datalake-prd-us-east-1-269012942764-source-code'
     + 'olist_report_pipeline/'
