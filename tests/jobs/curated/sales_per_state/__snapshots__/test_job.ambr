@@ -1,0 +1,9 @@
+# serializer version: 1
+# name: test_job
+  list([
+    Row(
+      'SP',
+      Decimal('58.90'),
+    ),
+  ])
+# ---

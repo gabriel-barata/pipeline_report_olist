@@ -79,3 +79,65 @@ def source_products(spark: SparkSession) -> DataFrame:
             'DAY',
         ],
     )
+
+
+@pytest.fixture
+def source_orders(spark: SparkSession) -> DataFrame:
+    return spark.createDataFrame(
+        [
+            (
+                '00010242fe8c5a6d1ba2dd792cb16214',
+                '9ef432eb6251297304e76186b10a928d',
+                'delivered',
+                '2017-10-02 10:56:33',
+                '2017-10-02 11:07:15',
+                '2017-10-04 19:55:00',
+                '2017-10-10 21:25:13',
+                '2017-10-18 00:00:00',
+                '2025',
+                '05',
+                '22',
+            )
+        ],
+        [
+            'order_id',
+            'customer_id',
+            'order_status',
+            'order_purchase_timestamp',
+            'order_approved_at',
+            'order_delivered_carrier_date',
+            'order_delivered_customer_date',
+            'order_estimated_delivery_date',
+            'YEAR',
+            'MONTH',
+            'DAY',
+        ],
+    )
+
+
+@pytest.fixture
+def source_customers(spark: SparkSession) -> DataFrame:
+    return spark.createDataFrame(
+        [
+            (
+                '9ef432eb6251297304e76186b10a928d',
+                '861eff4711a542e4b93843c6dd7febb0',
+                '14409',
+                'franca',
+                'SP',
+                '2025',
+                '05',
+                '22',
+            )
+        ],
+        [
+            'customer_id',
+            'customer_unique_id',
+            'customer_zip_code_prefix',
+            'customer_city',
+            'customer_state',
+            'YEAR',
+            'MONTH',
+            'DAY',
+        ],
+    )
