@@ -11,7 +11,9 @@ class KaggleJob(Job):
             source = self.source + file
             target = self.target + file
 
-            data = self.spark.read.csv(source, header=True, inferSchema=True, sep=',')
+            data = self.spark.read.csv(
+                source, header=True, inferSchema=True, sep=','
+            )
 
             data = self.filter_by_ref_date(data)
 

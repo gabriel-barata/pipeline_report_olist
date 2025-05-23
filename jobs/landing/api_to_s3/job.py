@@ -9,7 +9,9 @@ class ApiToS3Job(Job):
     target = LANDING_BUCKET + 'api_CNAE/'
 
     def run(self) -> None:
-        data = self.spark.createDataFrame(self.fetch_api_data(), schema=self.schema)
+        data = self.spark.createDataFrame(
+            self.fetch_api_data(), schema=self.schema
+        )
 
         data = self.generate_partition_columns(data)
 
@@ -48,17 +50,25 @@ class ApiToS3Job(Job):
                                 StructType(
                                     [
                                         StructField('id', StringType(), True),
-                                        StructField('descricao', StringType(), True),
-                                        StructField('observacoes', StringType(), True),
+                                        StructField(
+                                            'descricao', StringType(), True
+                                        ),
+                                        StructField(
+                                            'observacoes', StringType(), True
+                                        ),
                                         StructField(
                                             'secao',
                                             StructType(
                                                 [
                                                     StructField(
-                                                        'id', StringType(), True
+                                                        'id',
+                                                        StringType(),
+                                                        True,
                                                     ),
                                                     StructField(
-                                                        'descricao', StringType(), True
+                                                        'descricao',
+                                                        StringType(),
+                                                        True,
                                                     ),
                                                     StructField(
                                                         'observacoes',

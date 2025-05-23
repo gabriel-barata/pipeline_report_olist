@@ -13,6 +13,10 @@ poetry run python -m jobs.main landing.kaggle_to_s3 '2025-05-20'
 poetry run python -m jobs.main curated.sales_consolidated '2025-05-20'
 ```
 
+```bash
+pre-commit run --all-files
+```
+
 ## Datalake Layers
 ### Landing
 Essa camada do Lake é destinada a receber os dados da origem, exatamente como foram extráidos. Neste layer não temos restrição quanto ao formato de arquivo, podendo ser CSV, JSON, PARQUET, etc. 
