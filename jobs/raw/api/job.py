@@ -40,17 +40,25 @@ class ApiJob(Job):
                                 StructType(
                                     [
                                         StructField('id', StringType(), True),
-                                        StructField('descricao', StringType(), True),
-                                        StructField('observacoes', StringType(), True),
+                                        StructField(
+                                            'descricao', StringType(), True
+                                        ),
+                                        StructField(
+                                            'observacoes', StringType(), True
+                                        ),
                                         StructField(
                                             'secao',
                                             StructType(
                                                 [
                                                     StructField(
-                                                        'id', StringType(), True
+                                                        'id',
+                                                        StringType(),
+                                                        True,
                                                     ),
                                                     StructField(
-                                                        'descricao', StringType(), True
+                                                        'descricao',
+                                                        StringType(),
+                                                        True,
                                                     ),
                                                     StructField(
                                                         'observacoes',

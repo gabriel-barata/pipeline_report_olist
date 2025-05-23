@@ -49,10 +49,12 @@ class Job:
             .config('spark.jars.packages', self.aditional_packages)
             .config('spark.hadoop.fs.s3a.endpoint', 's3.amazonaws.com')
             .config(
-                'spark.hadoop.fs.s3a.access.key', os.getenv('AWS_ACCESS_KEY')
+                'spark.hadoop.fs.s3a.access.key',
+                os.getenv('AWS_ACCESS_KEY_ID'),
             )
             .config(
-                'spark.hadoop.fs.s3a.secret.key', os.getenv('AWS_SECRET_KEY')
+                'spark.hadoop.fs.s3a.secret.key',
+                os.getenv('AWS_SECRET_ACCESS_KEY'),
             )
             .config(
                 'spark.hadoop.fs.s3a.impl',
