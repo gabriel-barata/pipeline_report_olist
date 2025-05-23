@@ -279,3 +279,16 @@ spark-warehouse/
 .terraform.tfstate.lock.info
 *.backup
 terraform.tfstate
+
+
+.astro
+.git
+.env
+.DS_Store
+__pycache__/
+astro
+.venv
+airflow-webserver.pid
+webserver_config.py
+airflow.cfg
+airflow.db
