@@ -16,7 +16,7 @@ class SalesConsolidatedJob(Job):
     }
     target = CURATED_BUCKET + 'sales/sales_consolidated'
 
-    def run(self) -> None:
+    def run(self) -> None | DataFrame:
         orders = self.filter_by_ref_date(self.source_orders)
         order_items = self.filter_by_ref_date(self.source_order_items)
         products = self.filter_by_ref_date(self.source_products)
@@ -28,7 +28,9 @@ class SalesConsolidatedJob(Job):
             .join(customers, on='customer_id', how='left')
         )
 
-        data = data.groupBy(col('customer_state'), col('product_category_name'),).agg(
+        data = data.groupBy(
+            col('customer_state'), col('product_category_name')
+        ).agg(
             sum('price').alias('sales_total'),
             count('price').alias('sales_qty_items_sold'),
         )
@@ -40,7 +42,7 @@ class SalesConsolidatedJob(Job):
             col('sales_qty_items_sold'),
         )
 
-        (data.write.mode('overwrite').format('delta').save(self.target))
+        return self.save(data, self.target)
 
     @property
     def source_orders(self) -> DataFrame:

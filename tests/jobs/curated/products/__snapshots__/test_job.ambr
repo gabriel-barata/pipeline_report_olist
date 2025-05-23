@@ -1,0 +1,19 @@
+# serializer version: 1
+# name: test_job
+  list([
+    Row(
+      '4244733e06e7ecb4970a6e2683c13e61',
+      'perfumaria',
+      40,
+      287,
+      1,
+      225,
+      16,
+      10,
+      'baixo',
+      '2025',
+      '05',
+      '22',
+    ),
+  ])
+# ---

@@ -12,16 +12,17 @@ class ProductsJob(Job):
     }
     target = CURATED_BUCKET + 'products/products'
 
-    def run(self) -> None:
-        products = self.spark.read.parquet(self.sources['products'])
-        products = self.filter_by_ref_date(products)
-        order_items = self.source_order_items
+    def run(self) -> None | DataFrame:
+        products = self.filter_by_ref_date(self.source_products)
+        order_items = self.filter_by_ref_date(self.source_order_items)
 
         mean_product_value = order_items.groupBy(col('product_id')).agg(
             avg('price').alias('avg_price')
         )
 
-        q1, q2 = mean_product_value.approxQuantile('avg_price', [0.33, 0.66], 0.01)
+        q1, q2 = mean_product_value.approxQuantile(
+            'avg_price', [0.33, 0.66], 0.01
+        )
 
         mean_product_value = mean_product_value.withColumn(
             'price_category',
@@ -30,7 +31,9 @@ class ProductsJob(Job):
             .otherwise('alto'),
         )
 
-        products = products.join(mean_product_value, on='product_id', how='left')
+        products = products.join(
+            mean_product_value, on='product_id', how='left'
+        )
 
         products = products.select(
             col('product_id'),
@@ -47,7 +50,7 @@ class ProductsJob(Job):
             col('DAY'),
         )
 
-        (products.write.mode('overwrite').format('delta').save(self.target))
+        return self.save(products, self.target)
 
     @property
     def source_order_items(self) -> DataFrame:
@@ -55,3 +58,7 @@ class ProductsJob(Job):
             col('product_id'),
             col('price'),
         )
+
+    @property
+    def source_products(self) -> DataFrame:
+        return self.spark.read.parquet(self.sources['products'])

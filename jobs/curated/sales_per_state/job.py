@@ -15,7 +15,7 @@ class SalesPerStateJob(Job):
     }
     target = CURATED_BUCKET + '/sales/sales_per_state'
 
-    def run(self) -> None:
+    def run(self) -> None | DataFrame:
         orders = self.filter_by_ref_date(self.source_orders)
         order_items = self.filter_by_ref_date(self.source_order_items)
         customers = self.filter_by_ref_date(self.source_customers)
@@ -24,14 +24,16 @@ class SalesPerStateJob(Job):
             customers, on='customer_id', how='left'
         )
 
-        data = data.groupBy('customer_state').agg(sum('price').alias('sales_total'))
+        data = data.groupBy('customer_state').agg(
+            sum('price').alias('sales_total')
+        )
 
         data = data.select(
             col('customer_state').alias('sales_customer_state'),
             col('sales_total').cast('decimal(18,2)'),
         )
 
-        (data.write.mode('overwrite').format('delta').save(self.target))
+        return self.save(data, self.target)
 
     @property
     def source_orders(self) -> DataFrame:
