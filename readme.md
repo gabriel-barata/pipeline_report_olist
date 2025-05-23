@@ -1,6 +1,6 @@
 # Olist Report Pipeline
 
-Este repositório contém a MINHA resolução do case técnico proposto para a posição de Engenheiro de Dados no Grupo Autoglass.
+Este repositório contém a minha resolução do case técnico proposto para a posição de Engenheiro de Dados no Grupo Autoglass.
 
 ----
 
@@ -19,7 +19,7 @@ Breve descrição sobre a estrutura deste repositório, o que cada pasta contém
 
 ## .github
 Esta pasta contém os arquivos de configuração das pipelines de CI/CD do projeto, utilizando GitHub Actions.
-Para mais detalhes vá até a seção [CI/CD](#ci/cd)
+Para mais detalhes vá até a seção [CI/CD](#cicd).
 
 
 ## airflow
