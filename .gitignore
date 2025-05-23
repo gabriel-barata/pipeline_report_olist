@@ -277,3 +277,5 @@ spark-warehouse/
 .terraform
 .terraform.lock.hcl
 .terraform.tfstate.lock.info
+*.backup
+terraform.tfstate
